@@ -29,12 +29,13 @@ def ingresar_datos() :
     radio_minimo=velocidad_de_diseño**2/127*(1/(peralte_maximo+F_maxima))
     print(f'Radio mínimo: {radio_minimo}')
     radio_adoptado=float(input('Radio adoptado de la curva[m]= '))
-    azimut_entrada=float(input('Azimut de entrada [radianes]= '))
-    azimut_salida=float(input('Azimut de salida [radianes]= '))
+    azimut_entrada=float(input('Azimut de entrada [radianes](si solo tienes de dato el delta entre ambas rectas, pon aquí ese delta)= '))
+    azimut_salida=float(input('Azimut de salida [radianes](si solo tienes de dato el delta entre ambas rectas, pon aquí cero)= '))
     PI_coordenadas['Este']=float(input('PI coordenadas Norte UTM: '))
     PI_coordenadas['Norte']=float(input('PI coordenadas Este UTM: '))
     progresiva_PI=float(input('progresiva del PI [m] = '))
     bombeo=float(input('bombeo [tanto por 1] = '))
+    print(f'Peralte máximo[tanto por 1]= {peralte_maximo}')
     avance_en_progresivas_dentro_de_la_curva=float(input('Avance en progresivas dentro de la curva en [m]='))
 
 def hallar_elementos_geométricos_de_la_curva() :
@@ -116,6 +117,8 @@ def hallar_elementos_geométricos_de_la_curva() :
     print(f'Coordenadas Final de Curva PT UTM:' + str(PT_final_de_curva_coordenadas['Este']) + ',' + str(PT_final_de_curva_coordenadas['Norte']))
     print(f'Coordenadas centro de la Curva UTM:' + str(centro_de_la_curva_coordenadas['Este']) + ',' + str(centro_de_la_curva_coordenadas['Norte']))
     print(f'Azimut del cetro de la curva a PC: {azimut_centro_de_la_curva_a_PC}')
+
+
 def coordenadas_replanteo_de_la_curva() :
     este=[0]
     norte=[0]
@@ -167,6 +170,7 @@ def coordenadas_replanteo_de_la_curva() :
     print(f'Ángulo de doble deflexión: {2*ang_deflexion_replanteo}')
     print('Coordenadas E:' + str(este[contador]) + ',   N:' + str(norte[contador]))
 
+
 def progresion_del_peralte() :
     # PERALTE
     if tipo=='carretera':
@@ -182,7 +186,7 @@ def progresion_del_peralte() :
         if radio_adoptado<=350:
             peralte=7/100
         elif radio_adoptado<=2500:
-            peralte=(7-6.08*(1-350/radio_adoptado)**(1/3))/100
+            peralte=(7-6.08*(1-350/radio_adoptado)**(1.3))/100
         elif radio_adoptado<=3500:
             peralte=2/100
         else :
@@ -190,7 +194,7 @@ def progresion_del_peralte() :
     # PENDIENTE RELATIVA DE BORDE
     pendiente_relativa_de_borde=elegir_tipo_pendiente_relativa_de_borde()
     #CANTIDAD DE CARRILES
-    n_cantidad_de_carriles=hallar_n_cantidad_de_carriles()
+    n_cantidad_de_carriles=elegir_n_cantidad_de_carriles()
     print(f'Peralte [tanto por 1]= {peralte}')
     print(f'Pendiente relativa de borde= {pendiente_relativa_de_borde}')
     # CALCULO DE VALORES
@@ -300,15 +304,16 @@ Elige una opción: """)
         print('ELIGE UNA OPCCIÓN VÁLIDA!!!')
         elegir_tipo_pendiente_relativa_de_borde()
 
-def hallar_n_cantidad_de_carriles():
+def elegir_n_cantidad_de_carriles():
     eleccion=input('Cantidad de carriles n (n de ida y n de vuelta): ')
     if int(eleccion)<=0 :
         print('n debe mayor que cero')
-        hallar_n_cantidad_de_carriles()
+        elegir_n_cantidad_de_carriles()
     elif ((int(eleccion)==1) or (int(eleccion)==2) or (int(eleccion)==3) or (int(eleccion)==4) or (int(eleccion)==5) or (int(eleccion)==6)):
         return int(eleccion)
     else:
         print('Debes ingresar un n válido menor a 7 :v')
-        hallar_n_cantidad_de_carriles()
+        elegir_n_cantidad_de_carriles()
 
-ejecutar()
+if __name__ == "__main__":
+    ejecutar()
