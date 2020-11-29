@@ -155,7 +155,7 @@ def hallar_elementos_geométricos_de_la_curva() :
             j_normal=0.4
     print(f'J={j_normal}')
 
-    lt['comodidad dinamica']=velocidad_especifica_para_calculo_de_lt_adoptado/(46.656*j_normal)*(velocidad_especifica_para_calculo_de_lt_adoptado**2/radio_adoptado-1.27*peralte_adoptado)
+    lt['comodidad dinamica']=velocidad_especifica_para_calculo_de_lt_adoptado/(46.656*j_normal)*(velocidad_especifica_para_calculo_de_lt_adoptado**2/radio_adoptado-1.27*peralte_adoptado*100)
 
     if (lt['guiado optico']>lt['guiado optico adicional']) and (lt['guiado optico']>lt['maxima pendiente relativa de borde']) and ((lt['guiado optico']>lt['comodidad dinamica'])):
         lt['final']=lt['guiado optico']
