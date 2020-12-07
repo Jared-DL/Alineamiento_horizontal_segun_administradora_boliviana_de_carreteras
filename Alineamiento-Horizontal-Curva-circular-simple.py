@@ -122,17 +122,20 @@ def hallar_elementos_geométricos_de_la_curva() :
 def coordenadas_replanteo_de_la_curva() :
     este=[0]
     norte=[0]
+    # replanteo del 1er punto PC principio de curva
     contador=0
-    progresiva_replanteo=int(math.ceil(progresiva_PC))
-
+    
+    progresiva_replanteo=progresiva_PC
     ang_deflexion_replanteo=0
     este[contador]=PC_principio_de_curva_coordenadas['Este']
     norte[contador]=PC_principio_de_curva_coordenadas['Norte']
-    print('-----*-----INICIO DE REPLANTEO DE LA CURVA CIRCULAR SIMPLE-----*-----')
-    print(f'progresiva[m]: {progresiva_PC} ')
-    print(f'Ángulo de deflexión: {ang_deflexion_replanteo}')
-    print(f'Ángulo de doble deflexión: {2*ang_deflexion_replanteo}')
-    print('Coordenadas E:' + str(este[contador]) + ',   N:' + str(norte[contador]))
+    print('--- INICIO DE REPLANTEO DE LA CURVA CIRCULAR SIMPLE ---')
+    print(f'progresiva[m]: {progresiva_replanteo} ')
+    grados,minutos,segundos=radianes_a_grados_minutos_segundos(ang_deflexion_replanteo)
+    print(f"""Ángulo de deflexión {round(ang_deflexion_replanteo,8)} = {grados}°{minutos}'{segundos}" """)
+    grados,minutos,segundos=radianes_a_grados_minutos_segundos(2*ang_deflexion_replanteo)
+    print(f"""Ángulo de doble deflexión: {round(2*ang_deflexion_replanteo,8)} = {grados}°{minutos}'{segundos}" """)
+    print('Coordenadas E:' + str( round(este[contador],2) ) + ',   N:' + str(round(norte[contador],2)) )
     
     progresiva_replanteo=int(math.ceil(progresiva_PC))
     while (progresiva_replanteo%avance_en_progresivas_dentro_de_la_curva)!=0 :
@@ -140,16 +143,18 @@ def coordenadas_replanteo_de_la_curva() :
 
     while progresiva_replanteo<progresiva_PT :
         contador+=1
-        ang_deflexion_replanteo+=avance_en_progresivas_dentro_de_la_curva*deflexion_por_metro
+        ang_deflexion_replanteo=(progresiva_replanteo-progresiva_PC)*deflexion_por_metro
         este.append(hallar_este_replanteo(2*ang_deflexion_replanteo))
         norte.append(hallar_norte_replanteo(2*ang_deflexion_replanteo))
         print('--- --- ---- --- ---')
         print(f'progresiva[m]: {progresiva_replanteo} ')
-        print(f'Ángulo de deflexión {ang_deflexion_replanteo}')
-        print(f'Ángulo de doble deflexión: {2*ang_deflexion_replanteo}')
-        print('Coordenadas E:' + str(este[contador]) + ',   N:' + str(norte[contador]))
+        grados,minutos,segundos=radianes_a_grados_minutos_segundos(ang_deflexion_replanteo)
+        print(f"""Ángulo de deflexión {round(ang_deflexion_replanteo,8)} = {grados}°{minutos}'{segundos}" """)
+        grados,minutos,segundos=radianes_a_grados_minutos_segundos(2*ang_deflexion_replanteo)
+        print(f"""Ángulo de doble deflexión: {round(2*ang_deflexion_replanteo,8)} = {grados}°{minutos}'{segundos}" """)
+        print('Coordenadas E:' + str(round(este[contador],2)) + ',   N:' + str(round(norte[contador],2)))
         progresiva_replanteo+=avance_en_progresivas_dentro_de_la_curva
-    
+    # replanteo del último punto FC final de curva
     contador+=1
     progresiva_replanteo-=avance_en_progresivas_dentro_de_la_curva
     ang_deflexion_replanteo+=(progresiva_PT-progresiva_replanteo)*deflexion_por_metro
@@ -157,9 +162,11 @@ def coordenadas_replanteo_de_la_curva() :
     norte.append(hallar_norte_replanteo(2*ang_deflexion_replanteo))
     print('--- --- ---- --- ---')
     print(f'progresiva[m]: {progresiva_PT} ')
-    print(f'Ángulo de deflexión {ang_deflexion_replanteo}')
-    print(f'Ángulo de doble deflexión: {2*ang_deflexion_replanteo}')
-    print('Coordenadas E:' + str(este[contador]) + ',   N:' + str(norte[contador]))
+    grados,minutos,segundos=radianes_a_grados_minutos_segundos(ang_deflexion_replanteo)
+    print(f"""Ángulo de deflexión {round(ang_deflexion_replanteo,8)} = {grados}°{minutos}'{segundos}" """)
+    grados,minutos,segundos=radianes_a_grados_minutos_segundos(2*ang_deflexion_replanteo)
+    print(f"""Ángulo de doble deflexión: {round(2*ang_deflexion_replanteo,8)} = {grados}°{minutos}'{segundos}" """)
+    print('Coordenadas E:' + str(round(este[contador],2)) + ',   N:' + str(round(norte[contador],2)))
 
 
 def progresion_del_peralte() :
@@ -308,7 +315,11 @@ def elegir_n_cantidad_de_carriles():
 
 
 def radianes_a_grados_minutos_segundos(radianes):
-    grados=math.floor(radianes*182/math.pi)
+    grados=math.floor(radianes*180/math.pi)
+    minutos=math.floor( (radianes*180/math.pi - grados) * 60)
+    segundos=round( ((radianes*180/math.pi - grados) * 60-minutos)*60 , 2)
+    return grados,minutos,segundos
+
 
 if __name__ == "__main__":
     ejecutar()
