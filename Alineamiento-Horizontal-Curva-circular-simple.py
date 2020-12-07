@@ -123,29 +123,20 @@ def coordenadas_replanteo_de_la_curva() :
     este=[0]
     norte=[0]
     contador=0
-    progresiva_PC_redondeado_superior=int(math.ceil(progresiva_PC))
-    while (progresiva_PC_redondeado_superior%10)!=0 :
-        progresiva_PC_redondeado_superior += 1
+    progresiva_replanteo=int(math.ceil(progresiva_PC))
+
     ang_deflexion_replanteo=0
     este[contador]=PC_principio_de_curva_coordenadas['Este']
     norte[contador]=PC_principio_de_curva_coordenadas['Norte']
-    print('INICIO DE REPLANTEO DE LA CURVA CIRCULAR SIMPLE')
+    print('-----*-----INICIO DE REPLANTEO DE LA CURVA CIRCULAR SIMPLE-----*-----')
     print(f'progresiva[m]: {progresiva_PC} ')
     print(f'Ángulo de deflexión: {ang_deflexion_replanteo}')
     print(f'Ángulo de doble deflexión: {2*ang_deflexion_replanteo}')
     print('Coordenadas E:' + str(este[contador]) + ',   N:' + str(norte[contador]))
     
-    contador+=1
-    progresiva_replanteo=progresiva_PC_redondeado_superior
-    ang_deflexion_replanteo+=(progresiva_PC_redondeado_superior-progresiva_PC)*deflexion_por_metro
-    este.append(hallar_este_replanteo(2*ang_deflexion_replanteo))
-    norte.append(hallar_norte_replanteo(2*ang_deflexion_replanteo))
-    print('--- --- ---- --- ---')
-    print(f'progresiva[m]: {progresiva_replanteo} ')
-    print(f'Ángulo de deflexión {ang_deflexion_replanteo}')
-    print(f'Ángulo de doble deflexión: {2*ang_deflexion_replanteo}')
-    print('Coordenadas E:' + str(este[contador]) + ',   N:' + str(norte[contador]))
-    progresiva_replanteo+=avance_en_progresivas_dentro_de_la_curva
+    progresiva_replanteo=int(math.ceil(progresiva_PC))
+    while (progresiva_replanteo%avance_en_progresivas_dentro_de_la_curva)!=0 :
+        progresiva_replanteo += 1
 
     while progresiva_replanteo<progresiva_PT :
         contador+=1
@@ -314,6 +305,10 @@ def elegir_n_cantidad_de_carriles():
     else:
         print('Debes ingresar un n válido menor a 7 :v')
         elegir_n_cantidad_de_carriles()
+
+
+def radianes_a_grados_minutos_segundos(radianes):
+    grados=math.floor(radianes*182/math.pi)
 
 if __name__ == "__main__":
     ejecutar()
